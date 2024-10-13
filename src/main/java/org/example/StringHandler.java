@@ -1,5 +1,4 @@
 package org.example;
-import java.util.StringTokenizer;
 
 public class StringHandler {
 
@@ -9,19 +8,28 @@ public class StringHandler {
 
         String vowels = "AEIOUYaeiouy";
 
-        StringTokenizer tokenizer = new StringTokenizer(text);
+        StringBuffer currentWord = new StringBuffer();
 
-        while (tokenizer.hasMoreTokens()) {
-            String word = tokenizer.nextToken();
+        for (int i = 0; i < text.length(); i++) {
 
-            if (word.length() == lengthToRemove && vowels.indexOf(word.charAt(0)) == -1) {
-                continue;
+            char c = text.charAt(i);
+            if (!Character.isWhitespace(c)) {
+                currentWord.append(c);
+
+            } else {
+                if (currentWord.length() != lengthToRemove || vowels.indexOf(currentWord.charAt(0)) != -1) {
+                    result.append(currentWord).append(" ");
+                }
+                currentWord.setLength(0);
             }
-
-            result.append(word).append(" ");
         }
 
-        if (!result.isEmpty()) result.deleteCharAt(result.length() - 1);
+        if (!currentWord.isEmpty()) {
+            if (currentWord.length() != lengthToRemove || vowels.indexOf(currentWord.charAt(0)) != -1) {
+                result.append(currentWord);
+            }
+        }
+
         return result;
     }
 }
